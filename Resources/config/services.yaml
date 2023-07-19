@@ -9,3 +9,6 @@ services:
    #Maris\Symfony\Address\:
       #resource: '../../src/'
       #exclude: '../../src/{DependencyInjection,Entity,Traits}'
+   Maris\Symfony\TollRoad\Command\TollRoadsInitialize:
+      arguments:
+         $manager: '@doctrine'
