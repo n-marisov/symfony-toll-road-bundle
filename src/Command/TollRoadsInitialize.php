@@ -24,8 +24,8 @@ class TollRoadsInitialize extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $data = $this->createData();
-        foreach ( $this->createData() as $datum )
+        $data = require __DIR__."/../../Resources/tollroads/m-1.php";
+        foreach ( $data as $datum )
             $this->repository->save($datum);
 
         dd( $data );

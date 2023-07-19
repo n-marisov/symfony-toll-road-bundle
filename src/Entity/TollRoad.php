@@ -2,6 +2,7 @@
 
 namespace Maris\Symfony\TollRoad\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Maris\Symfony\Geo\Entity\Location;
 
@@ -67,6 +68,18 @@ class TollRoad
      * @var Collection
      */
     protected Collection $priceRules;
+
+    public function __construct()
+    {
+        $this->priceRules = new ArrayCollection();
+    }
+
+    public function addRule( PriceRule $rule ):void
+    {
+        $this->priceRules->add($rule);
+    }
+
+
 
     /**
      * @return int|null
@@ -244,6 +257,7 @@ class TollRoad
                 $rule->setWeekDay($day + 1 );
                 $rule->setPrice( $price );
                 $rule->setTollRoad( $instance );
+                $instance->addRule($rule);
             }
         }
         return $instance;
