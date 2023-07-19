@@ -13,4 +13,13 @@ class TollRoadRepository extends ServiceEntityRepository
         parent::__construct( $registry, TollRoad::class );
     }
 
+
+    public function save( TollRoad $tollRoad , bool $flush = true ):void
+    {
+        $this->getEntityManager()->persist( $tollRoad );
+
+        if($flush)
+            $this->getEntityManager()->flush();
+    }
+
 }
