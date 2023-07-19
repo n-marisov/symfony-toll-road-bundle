@@ -6,7 +6,6 @@ services:
       autoconfigure: true # Автоматически регистрирует ваши сервисы как команды, подписчики событий и т.д.
 
 
-   #Maris\Symfony\Address\:
-      #resource: '../../src/'
-      #exclude: '../../src/{DependencyInjection,Entity,Traits}'
-   Maris\Symfony\TollRoad\Command\TollRoadsInitialize:
+   Maris\Symfony\TollRoad\:
+      resource: '../../src/'
+      exclude: '../../src/{DependencyInjection,Entity}'
