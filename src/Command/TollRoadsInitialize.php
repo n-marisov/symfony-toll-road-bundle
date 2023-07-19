@@ -10,8 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 //#[AsCommand(name: 'toll_road:init')]
 class TollRoadsInitialize extends Command
 {
-
-    protected static $defaultName = 'toll_road:init';
+    protected static $defaultName = 'tollroad:init';
 
     protected ManagerRegistry $em;
 
@@ -23,6 +22,6 @@ class TollRoadsInitialize extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        dd( $this->em->getManager( ) );
+        dd( $this->em->getManager() );
     }
 }
