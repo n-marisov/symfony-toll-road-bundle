@@ -10,10 +10,10 @@
         <discriminator-column name="group" length="3" type="string" />
 
         <discriminator-map>
-            <discriminator-mapping value="I" class="Maris\Symfony\Address\Entity\PriceRuleI"/>
-            <discriminator-mapping value="II" class="Maris\Symfony\Address\Entity\PriceRuleII"/>
-            <discriminator-mapping value="III" class="Maris\Symfony\Address\Entity\PriceRuleIII"/>
-            <discriminator-mapping value="VI" class="Maris\Symfony\Address\Entity\PriceRuleVI"/>
+            <discriminator-mapping value="I" class="Maris\Symfony\TollRoad\Entity\PriceRuleI"/>
+            <discriminator-mapping value="II" class="Maris\Symfony\TollRoad\Entity\PriceRuleII"/>
+            <discriminator-mapping value="III" class="Maris\Symfony\TollRoad\Entity\PriceRuleIII"/>
+            <discriminator-mapping value="VI" class="Maris\Symfony\TollRoad\Entity\PriceRuleVI"/>
         </discriminator-map>
 
         <discriminator-column name="view"/>
@@ -25,7 +25,7 @@
         <field name="price" type="decimal" precision="6" scale="2" />
 
 
-        <many-to-one field="tollRoad" target-entity="Maris\Symfony\Address\Entity\TollRoad" >
+        <many-to-one field="tollRoad" target-entity="Maris\Symfony\TollRoad\Entity\TollRoad" >
 
             <cascade>
                 <cascade-persist />
