@@ -1,0 +1,74 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://symfony.com/schema/dic/doctrine/doctrine-1.0.xsd">
+
+    <!-- Реализует собой один терминал платной дороги -->
+    <entity name="Maris\Symfony\Address\Entity\TollRoad" table="toll_roads" >
+
+        <!-- Идентификатор в базе данных -->
+        <!-- Нет смысла устанавливать тип integer т.к. записей в таблице будет мало -->
+        <!-- Нет смысла использовать отрицательные числа так как ID начинается с 1 -->
+        <id name="id" type="smallint" column="id">
+            <generator/>
+            <options>
+                <option name="unsigned">true</option>
+            </options>
+        </id>
+
+        <!-- Название терминала -->
+        <field name="name" column="title" />
+
+        <!-- Название трассы на которой расположен терминал -->
+        <field name="track" />
+
+        <!-- Километр трасы с которого начинается участок -->
+        <!-- Нет смысла использовать отрицательные числа так как километровая метка трассы не может быть отрицательна -->
+        <field name="startTrackMark" type="smallint">
+            <options>
+                <option name="unsigned">true</option>
+            </options>
+        </field>
+
+        <!-- Километр трасы которым заканчивается участок -->
+        <!-- Нет смысла использовать отрицательные числа так как километровая метка трассы не может быть отрицательна -->
+        <field name="endTrackMark" type="smallint">
+            <options>
+                <option name="unsigned">true</option>
+            </options>
+        </field>
+
+        <!-- Точка центра дороги на которой находится терминал (левая граница) -->
+        <many-to-one field="location" target-entity="Maris\Symfony\Geo\Entity\Location">
+            <cascade>
+                <cascade-persist />
+                <cascade-remove />
+            </cascade>
+            <join-columns>
+                <join-column name="location_id" />
+            </join-columns>
+        </many-to-one>
+
+        <!-- Точка справа от терминала (на обочине) для расчета прохождения через терминал (правая граница) -->
+        <many-to-one field="roadside" target-entity="Maris\Symfony\Geo\Entity\Location">
+            <cascade>
+                <cascade-persist />
+                <cascade-remove />
+            </cascade>
+            <join-columns>
+                <join-column name="roadside_id" />
+            </join-columns>
+        </many-to-one>
+
+        <!-- Набор ценовых правил для этого терминала -->
+        <one-to-many field="priceRules" target-entity="Maris\Symfony\Address\Entity\PriceRuleCategory" mapped-by="tollRoad">
+            <cascade>
+                <cascade-persist/>
+                <cascade-remove/>
+            </cascade>
+        </one-to-many>
+
+
+    </entity>
+
+</doctrine-mapping>
