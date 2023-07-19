@@ -1,6 +1,6 @@
 <?php
 
-namespace Maris\Symfony\Address\Entity;
+namespace Maris\Symfony\TollRoad\Entity;
 
 /**
  * Класс родитель для всех ценовых правил.

@@ -27,12 +27,12 @@
   ],
   "autoload": {
     "psr-4": {
-      "Maris\\Symfony\\Address\\": "src/"
+      "Maris\\Symfony\\TollRoad\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Maris\\Symfony\\Address\\Test\\": "tests/"
+      "Maris\\Symfony\\TollRoad\\Test\\": "tests/"
     }
   },
   "require-dev": {

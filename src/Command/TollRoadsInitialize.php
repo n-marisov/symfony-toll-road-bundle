@@ -1,8 +1,7 @@
 <?php
 
-namespace Maris\Symfony\Address\Command;
+namespace Maris\Symfony\TollRoad\Command;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Maris\Symfony\Address\Entity;
+namespace Maris\Symfony\TollRoad\Entity;
 
 use Doctrine\Common\Collections\Collection;
 use Maris\Symfony\Geo\Entity\Location;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Maris\Symfony\Address\DependencyInjection;
+namespace Maris\Symfony\TollRoad\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

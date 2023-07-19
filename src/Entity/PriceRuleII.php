@@ -1,6 +1,6 @@
 <?php
 
-namespace Maris\Symfony\Address\Entity;
+namespace Maris\Symfony\TollRoad\Entity;
 
 /**
  * Ценовые правила для автомобилей второй категории.
