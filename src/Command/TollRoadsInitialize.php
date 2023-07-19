@@ -26,8 +26,8 @@ class TollRoadsInitialize extends Command
     {
         $data = require __DIR__."/../../Resources/tollroads/m-1.php";
         $data = $this->createData();
-        foreach ( $data as  $key => $datum )
-            $this->repository->save(  $datum );
+        #foreach ( $data as  $key => $datum )
+            #$this->repository->save(  $datum );
 
         dd( $data );
     }
