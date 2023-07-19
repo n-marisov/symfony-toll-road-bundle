@@ -4,7 +4,7 @@
                           https://symfony.com/schema/dic/doctrine/doctrine-1.0.xsd">
 
     <!-- Реализует собой один терминал платной дороги -->
-    <entity name="Maris\Symfony\Address\Entity\TollRoad" table="toll_roads" >
+    <entity name="Maris\Symfony\TollRoad\Entity\TollRoad" table="toll_roads" >
 
         <!-- Идентификатор в базе данных -->
         <!-- Нет смысла устанавливать тип integer т.к. записей в таблице будет мало -->
@@ -61,7 +61,7 @@
         </many-to-one>
 
         <!-- Набор ценовых правил для этого терминала -->
-        <one-to-many field="priceRules" target-entity="Maris\Symfony\Address\Entity\PriceRuleCategory" mapped-by="tollRoad">
+        <one-to-many field="priceRules" target-entity="Maris\Symfony\TollRoad\Entity\PriceRule" mapped-by="tollRoad">
             <cascade>
                 <cascade-persist/>
                 <cascade-remove/>
