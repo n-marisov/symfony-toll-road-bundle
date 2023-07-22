@@ -33,23 +33,25 @@ class TollRoadsInitialize extends Command
         $countUpdate = 0;
         try {
             $data = $this->createData();
-            $instances = $this->repository->findAll();
+            $instances = $this->repository->findAll() ?? [];
 
-            array_map(function ( TollRoad $i, TollRoad $d ) use ( &$countNew, &$countUpdate ){
-                if($i->isThis($d)){
+            foreach ($data as $tollRoad){
+                $arr = array_filter( $instances, fn (TollRoad $i) => $tollRoad->isThis($i) );
+                if(isset($arr[0])){
                     # Обновляем данные
-                    $i->setBearing($d->getBearing())
-                        ->setTrackData($d->getTrackData())
-                        ->setPrices($d->getPrices())
-                        ->setLocation($d->getLocation())
-                        ->setName($d->getName())
-                        ->setParent($d->getParent());
-                    $this->repository->save($i);
+                    $arr[0]->setBearing($tollRoad->getBearing())
+                        ->setTrackData($tollRoad->getTrackData())
+                        ->setPrices($tollRoad->getPrices())
+                        ->setLocation($tollRoad->getLocation())
+                        ->setName($tollRoad->getName())
+                        ->setParent($tollRoad->getParent());
+                    $this->repository->save($arr[0]);
                     $countUpdate++;
-                }else
-                    $this->repository->save($d);
-                $countNew++;
-            }, $instances, $data );
+                }else{
+                    $this->repository->save($tollRoad);
+                    $countNew++;
+                }
+            }
         }catch (\Exception $exception ){
             $io->error($exception->getMessage());
             return  Command::FAILURE;
