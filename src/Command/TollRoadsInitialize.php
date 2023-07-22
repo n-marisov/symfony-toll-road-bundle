@@ -39,23 +39,29 @@ class TollRoadsInitialize extends Command
         $countUpdate = 0;
         try {
             $data = $this->createData();
-            $instances = $this->em->getRepository(TollRoad::class)->findAll() ?? [];
+            $repository = $this->em->getRepository(TollRoad::class);
+            //$instances = $this->em->getRepository(TollRoad::class)->findAll() ?? [];
 
-            foreach ( $data as $newTollRoad)
-                foreach ($instances as $tollRoad)
-                    if($newTollRoad->isThis($tollRoad)) {
-                        $tollRoad->setBearing($tollRoad->getBearing())
-                            ->setTrackData($tollRoad->getTrackData())
-                            ->setPrices($tollRoad->getPrices())
-                            ->setLocation($tollRoad->getLocation())
-                            ->setName($tollRoad->getName())
-                            ->setParent($tollRoad->getParent());
-                        $this->em->persist( $tollRoad );
-                        $countUpdate++;
-                    } else {
-                        $this->em->persist( $newTollRoad );
-                        $countNew++;
-                    }
+
+            foreach ( $data as $newTollRoad){
+                $tollRoad = $repository->findOneBy([
+                    "uuid" => $newTollRoad->getUuid()
+                ]);
+                if(empty($tollRoad)){
+                    $this->em->persist( $newTollRoad );
+                    $countNew++;
+                }else{
+                    $tollRoad->setBearing($newTollRoad->getBearing())
+                        ->setTrackData($newTollRoad->getTrackData())
+                        ->setPrices($newTollRoad->getPrices())
+                        ->setLocation($newTollRoad->getLocation())
+                        ->setName($newTollRoad->getName())
+                        ->setParent($newTollRoad->getParent());
+                    $this->em->persist( $tollRoad );
+                    $countUpdate++;
+                    $this->em->persist($tollRoad);
+                }
+            }
             $this->em->flush();
         }catch (\Exception $exception ){
             $io->error($exception->getMessage());
