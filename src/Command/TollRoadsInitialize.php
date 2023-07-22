@@ -3,22 +3,26 @@
 namespace Maris\Symfony\TollRoad\Command;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\Persistence\ManagerRegistry;
 use Maris\Symfony\Geo\Factory\LocationFactory;
 use Maris\Symfony\Geo\Service\EllipsoidalCalculator;
 use Maris\Symfony\TollRoad\Entity\TollRoad;
 use Maris\Symfony\TollRoad\Factory\TollRoadFactory;
 use Maris\Symfony\TollRoad\Repository\TollRoadRepository;
-use Symfony\Bridge\Doctrine\ManagerRegistry;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Yaml\Yaml;
 
-
+#[AsCommand(
+    name: 'tollroad:init',
+    description: "Команда записывает в базу данных все платные дороги."
+)]
 class TollRoadsInitialize extends Command
 {
-    protected static $defaultName = 'tollroad:init';
+    //protected static $defaultName = 'tollroad:init';
 
     protected TollRoadRepository $repository;
 
