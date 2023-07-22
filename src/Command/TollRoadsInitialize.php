@@ -57,14 +57,14 @@ class TollRoadsInitialize extends Command
                         ->setLocation($tollRoad->getLocation())
                         ->setName($tollRoad->getName())
                         ->setParent($tollRoad->getParent());
-                    $this->repository->save($arr[0]);
+                    $this->repository->save($arr[0],true);
                     $countUpdate++;
                 }else{
-                    $this->repository->save($tollRoad);
+                    $this->repository->save($tollRoad,true);
                     $countNew++;
                 }
             }
-            $this->em->flush();
+            //$this->em->flush();
         }catch (\Exception $exception ){
             $io->error($exception->getMessage());
             return  Command::FAILURE;
