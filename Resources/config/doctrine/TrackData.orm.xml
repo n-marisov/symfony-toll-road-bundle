@@ -5,7 +5,7 @@
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
     <!-- Реализует собой ценовое правило -->
-    <entity name="Maris\Symfony\TollRoad\Entity\TrackData" >
+    <embeddable name="Maris\Symfony\TollRoad\Entity\TrackData" >
         <field name="name" />
         <field name="start" type="smallint">
             <options>
@@ -22,6 +22,6 @@
                 <option name="unsigned"/>
             </options>
         </field>
-    </entity>
+    </embeddable>
 
 </doctrine-mapping>
