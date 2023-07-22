@@ -25,7 +25,7 @@
         <field name="price" type="decimal" precision="6" scale="2" />
 
 
-        <many-to-one field="tollRoad" target-entity="Maris\Symfony\TollRoad\Entity\TollRoad" >
+        <many-to-one field="tollRoad" target-entity="Maris\Symfony\TollRoad\Entity\TollRoad" inversed-by="uuid" >
 
             <cascade>
                 <cascade-persist />
