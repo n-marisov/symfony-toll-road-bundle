@@ -45,7 +45,7 @@
         </field>
 
         <!-- Точка центра дороги на которой находится терминал (левая граница) -->
-        <!--<many-to-one field="location" target-entity="Maris\Symfony\Geo\Entity\Location">
+        <many-to-one field="location" target-entity="Maris\Symfony\Geo\Entity\Location">
             <cascade>
                 <cascade-persist />
                 <cascade-remove />
@@ -53,7 +53,7 @@
             <join-columns>
                 <join-column name="location_id" />
             </join-columns>
-        </many-to-one>-->
+        </many-to-one>
 
         <!-- Точка справа от терминала (на обочине) для расчета прохождения через терминал (правая граница) -->
         <!--<many-to-one field="roadside" target-entity="Maris\Symfony\Geo\Entity\Location">
@@ -67,7 +67,9 @@
         </many-to-one>-->
 
 
-        <embedded name="beam" class="Maris\Symfony\Geo\Entity\Beam" column-prefix="_"/>
+        <!--<embedded name="beam" class="Maris\Symfony\Geo\Entity\Beam" column-prefix="_"/>-->
+
+        <field name="bearing" type="float" />
 
         <!-- Набор ценовых правил для этого терминала -->
         <one-to-many field="priceRules" target-entity="Maris\Symfony\TollRoad\Entity\PriceRule" mapped-by="tollRoad">

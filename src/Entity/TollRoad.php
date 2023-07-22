@@ -66,7 +66,7 @@ class TollRoad
      * Точка центра дороги на которой находится терминал.
      * @var Location
      */
-    //protected Location $location;
+    protected Location $location;
 
     /**
      * Точка на обочине возле терминала
@@ -74,7 +74,7 @@ class TollRoad
      */
     //protected Location $roadside;
 
-    protected Beam $beam;
+    protected float $bearing;
 
     /**
      * Ценовые правила для проезда через текущий терминал.
@@ -87,6 +87,11 @@ class TollRoad
     {
         $this->priceRules = new ArrayCollection();
         $this->getUuid();
+    }
+
+    public function getBeam():Beam
+    {
+        return new Beam( $this->location, $this->bearing );
     }
 
     /**
