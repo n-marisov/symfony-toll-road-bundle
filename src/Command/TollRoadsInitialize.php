@@ -24,13 +24,10 @@ use Symfony\Component\Yaml\Yaml;
 )]
 class TollRoadsInitialize extends Command
 {
-    protected TollRoadRepository $repository;
-
     protected EntityManager $em;
 
-    public function __construct( TollRoadRepository $repository , EntityManagerInterface $em )
+    public function __construct( EntityManagerInterface $em )
     {
-        $this->repository = $repository;
         $this->em = $em;
         parent::__construct();
     }
@@ -42,7 +39,7 @@ class TollRoadsInitialize extends Command
         $countUpdate = 0;
         try {
             $data = $this->createData();
-            $instances = $this->repository->findAll() ?? [];
+            $instances = $this->em->getRepository(TollRoad::class)->findAll() ?? [];
 
             foreach ($data as $tollRoad){
                 $arr = array_filter( $instances, fn (TollRoad $i) => $tollRoad->isThis($i) );
@@ -54,16 +51,16 @@ class TollRoadsInitialize extends Command
                         ->setLocation($tollRoad->getLocation())
                         ->setName($tollRoad->getName())
                         ->setParent($tollRoad->getParent());
-                    $this->repository->save($arr[0],true);
+                    $this->em->persist( $arr[0] );
                     $countUpdate++;
                 }else{
-                    $this->repository->save($tollRoad,true);
+                    $this->em->persist( $tollRoad );
                     $countNew++;
                 }
             }
            // dump($this->repository);
-            dump($this->em);
-            //$this->em->flush();
+            //dump($this->em);
+            $this->em->flush();
         }catch (\Exception $exception ){
             $io->error($exception->getMessage());
             return  Command::FAILURE;
