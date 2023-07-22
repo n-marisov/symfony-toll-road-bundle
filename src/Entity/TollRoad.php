@@ -89,10 +89,18 @@ class TollRoad
         ]));
     }
 
-
-    public function isThis( self $tollRoad ):bool
+    /***
+     * Сравнивает объекты на идентичность.
+     * @param TollRoad $tollRoad
+     * @return bool
+     */
+    public function equals( self $tollRoad ):bool
     {
-        return $this->getUuid() == $tollRoad->getUuid();
+        return $this->getUuid() == $tollRoad->getUuid() &&
+            $this->location->equals( $tollRoad->location ) &&
+            $this->bearing === $tollRoad->bearing &&
+            $tollRoad->name = $this->name &&
+                $this->prices->equals( $tollRoad->prices );
     }
 
     /**

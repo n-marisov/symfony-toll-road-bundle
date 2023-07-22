@@ -47,6 +47,13 @@ class PriceBlock
         $this->largeSized = $largeSized;
     }
 
+    public function equals( self $priceBlock ):bool
+    {
+        return $this->passenger === $priceBlock->passenger &&
+            $this->mediumSized === $priceBlock->mediumSized &&
+            $this->cargo === $priceBlock->cargo &&
+            $this->largeSized === $priceBlock->largeSized;
+    }
 
     /**
      * @return float

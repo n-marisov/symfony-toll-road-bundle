@@ -37,13 +37,12 @@ class TollRoadsInitialize extends Command
         $io = new SymfonyStyle( $input, $output );
         $countNew = 0;
         $countUpdate = 0;
+        $ids = [];
         try {
             $data = $this->createData();
             $repository = $this->em->getRepository(TollRoad::class);
-            //$instances = $this->em->getRepository(TollRoad::class)->findAll() ?? [];
 
-
-            foreach ( $data as $newTollRoad){
+            foreach ( $data as $newTollRoad ){
                 $tollRoad = $repository->findOneBy([
                     "uuid" => $newTollRoad->getUuid()
                 ]);
@@ -57,18 +56,27 @@ class TollRoadsInitialize extends Command
                         ->setLocation($newTollRoad->getLocation())
                         ->setName($newTollRoad->getName())
                         ->setParent($newTollRoad->getParent());
+                    $ids[] = $tollRoad->getId();
                     $this->em->persist( $tollRoad );
                     $countUpdate++;
                     $this->em->persist($tollRoad);
                 }
             }
+
+            $all = $repository->findAll();
+
+            $ignore = count(array_filter($all,fn (TollRoad $t) => !in_array($t->getId(),$ids)));
+
             $this->em->flush();
         }catch (\Exception $exception ){
             $io->error($exception->getMessage());
             return  Command::FAILURE;
         }
 
-        $io->success("Добавлено $countNew записей , обновлено $countUpdate.");
+
+
+
+        $io->success("Добавлено $countNew, обновлено $countUpdate, проигнорировано $ignore записей.");
         return Command::SUCCESS;
     }
 
