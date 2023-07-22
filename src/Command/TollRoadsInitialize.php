@@ -4,12 +4,11 @@ namespace Maris\Symfony\TollRoad\Command;
 
 use Maris\Symfony\TollRoad\Entity\TollRoad;
 use Maris\Symfony\TollRoad\Repository\TollRoadRepository;
-use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-//#[AsCommand(name: 'toll_road:init')]
+
 class TollRoadsInitialize extends Command
 {
     protected static $defaultName = 'tollroad:init';
@@ -24,7 +23,7 @@ class TollRoadsInitialize extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $data = require __DIR__."/../../Resources/tollroads/m-1.php";
+       // $data = require __DIR__."/../../Resources/tollroads/m-1.php";
         $data = $this->createData();
         #foreach ( $data as  $key => $datum )
             #$this->repository->save(  $datum );

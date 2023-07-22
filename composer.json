@@ -36,6 +36,7 @@
     }
   },
   "require-dev": {
+    "symfony/yaml": "^6.0",
     "phpunit/phpunit": "*"
   }
 }

@@ -9,12 +9,18 @@
         <!-- Идентификатор в базе данных -->
         <!-- Нет смысла устанавливать тип integer т.к. записей в таблице будет мало -->
         <!-- Нет смысла использовать отрицательные числа так как ID начинается с 1 -->
-        <id name="id" type="smallint" column="id">
+        <!--<id name="id" type="smallint" column="id">
             <generator/>
             <options>
                 <option name="unsigned">true</option>
             </options>
+        </id>-->
+
+        <!--Используется для однозначного определения терминала и создается на основе его не изменяемых данных-->
+        <id name="uuid" type="string" column="uuid" length="32" >
+            <generator strategy="NONE"/>
         </id>
+
 
         <!-- Название терминала -->
         <field name="name" column="title" />
@@ -39,7 +45,7 @@
         </field>
 
         <!-- Точка центра дороги на которой находится терминал (левая граница) -->
-        <many-to-one field="location" target-entity="Maris\Symfony\Geo\Entity\Location">
+        <!--<many-to-one field="location" target-entity="Maris\Symfony\Geo\Entity\Location">
             <cascade>
                 <cascade-persist />
                 <cascade-remove />
@@ -47,10 +53,10 @@
             <join-columns>
                 <join-column name="location_id" />
             </join-columns>
-        </many-to-one>
+        </many-to-one>-->
 
         <!-- Точка справа от терминала (на обочине) для расчета прохождения через терминал (правая граница) -->
-        <many-to-one field="roadside" target-entity="Maris\Symfony\Geo\Entity\Location">
+        <!--<many-to-one field="roadside" target-entity="Maris\Symfony\Geo\Entity\Location">
             <cascade>
                 <cascade-persist />
                 <cascade-remove />
@@ -58,7 +64,10 @@
             <join-columns>
                 <join-column name="roadside_id" />
             </join-columns>
-        </many-to-one>
+        </many-to-one>-->
+
+
+        <embedded name="beam" class="Maris\Symfony\Geo\Entity\Beam" column-prefix="_"/>
 
         <!-- Набор ценовых правил для этого терминала -->
         <one-to-many field="priceRules" target-entity="Maris\Symfony\TollRoad\Entity\PriceRule" mapped-by="tollRoad">

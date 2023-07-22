@@ -4,6 +4,7 @@ namespace Maris\Symfony\TollRoad\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Maris\Symfony\Geo\Entity\Beam;
 use Maris\Symfony\Geo\Entity\Location;
 
 /***
@@ -13,7 +14,18 @@ use Maris\Symfony\Geo\Entity\Location;
  */
 class TollRoad
 {
-    protected ?int $id;
+    /**
+     * ID в базе данных
+     * @var int|null
+     */
+   // protected ?int $id;
+
+    /**
+     * Уникальная строка однозначно
+     * определяющая текущий терминал.
+     * @var string|null
+     */
+    protected ?string $uuid = null;
 
     /***
      * Название трассы
@@ -54,13 +66,15 @@ class TollRoad
      * Точка центра дороги на которой находится терминал.
      * @var Location
      */
-    protected Location $location;
+    //protected Location $location;
 
     /**
      * Точка на обочине возле терминала
      * @var Location
      */
-    protected Location $roadside;
+    //protected Location $roadside;
+
+    protected Beam $beam;
 
     /**
      * Ценовые правила для проезда через текущий терминал.
@@ -72,10 +86,40 @@ class TollRoad
     public function __construct()
     {
         $this->priceRules = new ArrayCollection();
+        $this->getUuid();
     }
 
+    /**
+     * Uuid используется для однозначного определения
+     * терминала, для одного и того же терминала всегда одинаково.
+     * Для формирования используются данные,
+     * которые в априори не могут быть изменены,
+     * название трассы, километры начала и конца
+     * участка.
+     * Если по каким-то причинам эти данные были
+     * изменены текущая сущность подлежит удалению,
+     * и создается новая.
+     * @return string
+     */
+    public function getUuid(): string
+    {
+        return $this->uuid ?? $this->uuid = md5(serialize([
+            "track" => [
+                "name" => $this->track,
+                "start" => $this->startTrackMark,
+                "end" => $this->endTrackMark
+            ],
+        ]));
+    }
+
+    /**
+     * Добавляет ценовое правило.
+     * @param PriceRule $rule
+     * @return void
+     */
     public function addRule( PriceRule $rule ):void
     {
+        $rule->setTollRoad($this);
         $this->priceRules->add($rule);
     }
 
@@ -84,10 +128,10 @@ class TollRoad
     /**
      * @return int|null
      */
-    public function getId(): ?int
+/*    public function getId(): ?int
     {
         return $this->id;
-    }
+    }*/
 
     /**
      * @return string
@@ -182,46 +226,46 @@ class TollRoad
     /**
      * @return Location
      */
-    public function getLocation(): Location
+    /*public function getLocation(): Location
     {
         return $this->location;
-    }
+    }*/
 
     /**
      * @param Location $location
      * @return $this
      */
-    public function setLocation(Location $location): self
+    /*public function setLocation(Location $location): self
     {
         $this->location = $location;
         return $this;
-    }
+    }*/
 
     /**
      * @return Location
      */
-    public function getRoadside(): Location
+    /*public function getRoadside(): Location
     {
         return $this->roadside;
-    }
+    }*/
 
     /**
      * @param Location $roadside
      * @return $this
      */
-    public function setRoadside(Location $roadside): self
+    /*public function setRoadside(Location $roadside): self
     {
         $this->roadside = $roadside;
         return $this;
-    }
+    }*/
 
     /**
      * @return Collection
      */
-    public function getPriceRules(): Collection
+    /*public function getPriceRules(): Collection
     {
         return $this->priceRules;
-    }
+    }*/
 
     /**
      * @param Collection $priceRules
@@ -256,7 +300,6 @@ class TollRoad
                 };
                 $rule->setWeekDay($day + 1 );
                 $rule->setPrice( $price );
-                $rule->setTollRoad( $instance );
                 $instance->addRule($rule);
             }
         }
