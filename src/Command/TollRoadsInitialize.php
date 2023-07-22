@@ -58,7 +58,6 @@ class TollRoadsInitialize extends Command
         }
 
         $io->success("Добавлено $countNew записей , обновлено $countUpdate $countNew.");
-
         return Command::SUCCESS;
     }
 
