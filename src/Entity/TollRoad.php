@@ -18,7 +18,7 @@ class TollRoad
      * ID в базе данных
      * @var int|null
      */
-   // protected ?int $id;
+    protected ?int $id;
 
     /**
      * Уникальная строка однозначно

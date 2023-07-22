@@ -9,12 +9,12 @@
         <!-- Идентификатор в базе данных -->
         <!-- Нет смысла устанавливать тип integer т.к. записей в таблице будет мало -->
         <!-- Нет смысла использовать отрицательные числа так как ID начинается с 1 -->
-        <!--<id name="id" type="smallint" column="id">
+        <id name="id" type="smallint" column="id">
             <generator/>
             <options>
                 <option name="unsigned">true</option>
             </options>
-        </id>-->
+        </id>
 
         <!--Используется для однозначного определения терминала и создается на основе его не изменяемых данных-->
         <id name="uuid" type="string" column="uuid" length="32" >
