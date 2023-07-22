@@ -3,6 +3,7 @@
 namespace Maris\Symfony\TollRoad\Command;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Maris\Symfony\Geo\Factory\LocationFactory;
 use Maris\Symfony\Geo\Service\EllipsoidalCalculator;
@@ -24,15 +25,12 @@ class TollRoadsInitialize extends Command
 {
     protected TollRoadRepository $repository;
 
-    protected ManagerRegistry $doctrine;
-
     protected EntityManager $em;
 
-    public function __construct( TollRoadRepository $repository , ManagerRegistry $doctrine   )
+    public function __construct( TollRoadRepository $repository , EntityManagerInterface $em )
     {
         $this->repository = $repository;
-        $this->doctrine = $doctrine;
-        $this->em = $doctrine->getManager();
+        $this->em = $em;
         parent::__construct();
     }
 
@@ -62,7 +60,7 @@ class TollRoadsInitialize extends Command
                     $countNew++;
                 }
             }
-            dump($this->repository);
+           // dump($this->repository);
             dump($this->em);
             //$this->em->flush();
         }catch (\Exception $exception ){
