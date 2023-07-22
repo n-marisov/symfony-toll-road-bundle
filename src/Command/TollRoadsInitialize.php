@@ -22,15 +22,13 @@ use Symfony\Component\Yaml\Yaml;
 )]
 class TollRoadsInitialize extends Command
 {
-    //protected static $defaultName = 'tollroad:init';
-
     protected TollRoadRepository $repository;
 
     protected ManagerRegistry $doctrine;
 
     protected EntityManager $em;
 
-    public function __construct( TollRoadRepository $repository , ManagerRegistry $doctrine  )
+    public function __construct( TollRoadRepository $repository , ManagerRegistry $doctrine   )
     {
         $this->repository = $repository;
         $this->doctrine = $doctrine;
@@ -64,6 +62,8 @@ class TollRoadsInitialize extends Command
                     $countNew++;
                 }
             }
+            dump($this->repository);
+            dump($this->em);
             //$this->em->flush();
         }catch (\Exception $exception ){
             $io->error($exception->getMessage());
