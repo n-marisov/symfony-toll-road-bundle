@@ -49,7 +49,7 @@ class TollRoadsInitialize extends Command
                 if(empty($tollRoad)){
                     $this->em->persist( $newTollRoad );
                     $countNew++;
-                }else{
+                }elseif(!$newTollRoad->equals($tollRoad)){
                     $tollRoad->setBearing($newTollRoad->getBearing())
                         ->setTrackData($newTollRoad->getTrackData())
                         ->setPrices($newTollRoad->getPrices())
