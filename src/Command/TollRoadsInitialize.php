@@ -19,7 +19,8 @@ use Symfony\Component\Yaml\Yaml;
 
 #[AsCommand(
     name: 'tollroad:init',
-    description: "Команда записывает в базу данных все платные дороги."
+    description: "Команда записывает в базу данных все платные дороги.",
+    hidden: false
 )]
 class TollRoadsInitialize extends Command
 {
