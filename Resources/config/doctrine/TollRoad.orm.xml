@@ -17,34 +17,17 @@
         </id>
 
         <!--Используется для однозначного определения терминала и создается на основе его не изменяемых данных-->
-        <id name="uuid" type="string" column="uuid" length="32" >
-            <generator strategy="NONE"/>
-        </id>
+        <field name="uuid" length="32" />
 
 
         <!-- Название терминала -->
         <field name="name" column="title" />
 
         <!-- Название трассы на которой расположен терминал -->
-        <field name="track" />
+        <embedded name="trackData" column-prefix="track_" class="Maris\Symfony\TollRoad\Entity\TrackData" />
 
-        <!-- Километр трасы с которого начинается участок -->
-        <!-- Нет смысла использовать отрицательные числа так как километровая метка трассы не может быть отрицательна -->
-        <field name="startTrackMark" type="smallint">
-            <options>
-                <option name="unsigned">true</option>
-            </options>
-        </field>
 
-        <!-- Километр трасы которым заканчивается участок -->
-        <!-- Нет смысла использовать отрицательные числа так как километровая метка трассы не может быть отрицательна -->
-        <field name="endTrackMark" type="smallint">
-            <options>
-                <option name="unsigned">true</option>
-            </options>
-        </field>
-
-        <!-- Точка центра дороги на которой находится терминал (левая граница) -->
+        <!-- Точка центра дороги на которой находится терминал -->
         <many-to-one field="location" target-entity="Maris\Symfony\Geo\Entity\Location">
             <cascade>
                 <cascade-persist />
@@ -55,30 +38,11 @@
             </join-columns>
         </many-to-one>
 
-        <!-- Точка справа от терминала (на обочине) для расчета прохождения через терминал (правая граница) -->
-        <!--<many-to-one field="roadside" target-entity="Maris\Symfony\Geo\Entity\Location">
-            <cascade>
-                <cascade-persist />
-                <cascade-remove />
-            </cascade>
-            <join-columns>
-                <join-column name="roadside_id" />
-            </join-columns>
-        </many-to-one>-->
-
-
-        <!--<embedded name="beam" class="Maris\Symfony\Geo\Entity\Beam" column-prefix="_"/>-->
-
+        <!-- Азимут (начальный от точки location) в направлении движения транспорта -->
         <field name="bearing" type="float" />
 
         <!-- Набор ценовых правил для этого терминала -->
-        <one-to-many field="priceRules" target-entity="Maris\Symfony\TollRoad\Entity\PriceRule" mapped-by="tollRoad">
-            <cascade>
-                <cascade-persist/>
-                <cascade-remove/>
-            </cascade>
-        </one-to-many>
-
+        <embedded name="prices" column-prefix="group" class="Maris\Symfony\TollRoad\Entity\PriceBlock"/>
 
     </entity>
 

@@ -2,9 +2,6 @@
 
 namespace Maris\Symfony\TollRoad\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Maris\Symfony\Geo\Entity\Beam;
 use Maris\Symfony\Geo\Entity\Location;
 
 /***
@@ -29,27 +26,15 @@ class TollRoad
 
     /***
      * Название трассы
-     * @var string
+     * @var TrackData
      */
-    protected string $track;
+    protected TrackData $trackData;
 
     /**
      * Название терминала
      * @var string
      */
     protected string $name;
-
-    /**
-     * Километр (метка) трассы с которой начинается участок.
-     * @var int
-     */
-    protected int $startTrackMark;
-
-    /**
-     * Километр (метка) трассы с которым заканчивается участок.
-     * @var int
-     */
-    protected int $endTrackMark;
 
     /***
      * Родительский терминал.
@@ -69,30 +54,16 @@ class TollRoad
     protected Location $location;
 
     /**
-     * Точка на обочине возле терминала
-     * @var Location
+     * Азимут по направлению движения.
+     * @var float
      */
-    //protected Location $roadside;
-
     protected float $bearing;
 
     /**
-     * Ценовые правила для проезда через текущий терминал.
-     * Может быть больше четырех.
-     * @var Collection
+     * Цены за проезд
+     * @var PriceBlock
      */
-    protected Collection $priceRules;
-
-    public function __construct()
-    {
-        $this->priceRules = new ArrayCollection();
-        $this->getUuid();
-    }
-
-    public function getBeam():Beam
-    {
-        return new Beam( $this->location, $this->bearing );
-    }
+    protected PriceBlock $prices;
 
     /**
      * Uuid используется для однозначного определения
@@ -110,51 +81,28 @@ class TollRoad
     {
         return $this->uuid ?? $this->uuid = md5(serialize([
             "track" => [
-                "name" => $this->track,
-                "start" => $this->startTrackMark,
-                "end" => $this->endTrackMark
+                "name" => $this->trackData->getName(),
+                "start" => $this->trackData->getStart(),
+                "end" => $this->trackData->getEnd(),
+                "terminal" => $this->trackData->getTerminal()
             ],
         ]));
     }
 
-    /**
-     * Добавляет ценовое правило.
-     * @param PriceRule $rule
-     * @return void
-     */
-    public function addRule( PriceRule $rule ):void
+
+    public function isThis( self $tollRoad ):bool
     {
-        $rule->setTollRoad($this);
-        $this->priceRules->add($rule);
+        return $this->getUuid() == $tollRoad->getUuid();
     }
-
-
 
     /**
      * @return int|null
      */
-/*    public function getId(): ?int
+    public function getId(): ?int
     {
         return $this->id;
-    }*/
-
-    /**
-     * @return string
-     */
-    public function getTrack(): string
-    {
-        return $this->track;
     }
 
-    /**
-     * @param string $track
-     * @return $this
-     */
-    public function setTrack(string $track): self
-    {
-        $this->track = $track;
-        return $this;
-    }
 
     /**
      * @return string
@@ -175,40 +123,24 @@ class TollRoad
     }
 
     /**
-     * @return int
+     * @return TrackData
      */
-    public function getStartTrackMark(): int
+    public function getTrackData(): TrackData
     {
-        return $this->startTrackMark;
+        return $this->trackData;
     }
 
     /**
-     * @param int $startTrackMark
+     * @param TrackData $trackData
      * @return $this
      */
-    public function setStartTrackMark(int $startTrackMark): self
+    public function setTrackData(TrackData $trackData): self
     {
-        $this->startTrackMark = $startTrackMark;
+        $this->trackData = $trackData;
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getEndTrackMark(): int
-    {
-        return $this->endTrackMark;
-    }
 
-    /**
-     * @param int $endTrackMark
-     * @return $this
-     */
-    public function setEndTrackMark(int $endTrackMark): self
-    {
-        $this->endTrackMark = $endTrackMark;
-        return $this;
-    }
 
     /**
      * @return TollRoad|null
@@ -231,84 +163,58 @@ class TollRoad
     /**
      * @return Location
      */
-    /*public function getLocation(): Location
+    public function getLocation(): Location
     {
         return $this->location;
-    }*/
+    }
 
     /**
      * @param Location $location
      * @return $this
      */
-    /*public function setLocation(Location $location): self
+    public function setLocation(Location $location): self
     {
         $this->location = $location;
         return $this;
-    }*/
+    }
+
 
     /**
-     * @return Location
+     * @return float
      */
-    /*public function getRoadside(): Location
+    public function getBearing(): float
     {
-        return $this->roadside;
-    }*/
+        return $this->bearing;
+    }
 
     /**
-     * @param Location $roadside
+     * @param float $bearing
      * @return $this
      */
-    /*public function setRoadside(Location $roadside): self
+    public function setBearing(float $bearing): self
     {
-        $this->roadside = $roadside;
+        $this->bearing = $bearing;
         return $this;
-    }*/
+    }
 
     /**
-     * @return Collection
+     * @return PriceBlock
      */
-    /*public function getPriceRules(): Collection
+    public function getPrices(): PriceBlock
     {
-        return $this->priceRules;
-    }*/
+        return $this->prices;
+    }
 
     /**
-     * @param Collection $priceRules
+     * @param PriceBlock $prices
      * @return $this
      */
-    public function setPriceRules(Collection $priceRules): self
+    public function setPrices(PriceBlock $prices): self
     {
-        $this->priceRules = $priceRules;
+        $this->prices = $prices;
         return $this;
     }
 
 
-    public static function create( array $data ):static
-    {
-        $instance = new static();
-
-        $instance->name = $data["name"];
-        $instance->track = $data["track"]["name"];
-        $instance->startTrackMark = $data["track"]["start"];
-        $instance->endTrackMark = $data["track"]["end"];
-
-        $instance->location = Location::fromString($data["location"]);
-        $instance->roadside = Location::fromString($data["roadside"]);
-
-        foreach ($data["prices"] as $day => $prices ){
-            foreach ($prices as $group => $price){
-                $rule = match ( $group ){
-                    0 => new PriceRuleI(),
-                    1 => new PriceRuleII(),
-                    2 => new PriceRuleIII(),
-                    3 => new PriceRuleVI()
-                };
-                $rule->setWeekDay($day + 1 );
-                $rule->setPrice( $price );
-                $instance->addRule($rule);
-            }
-        }
-        return $instance;
-    }
 
 }

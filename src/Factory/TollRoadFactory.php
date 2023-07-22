@@ -2,14 +2,11 @@
 
 namespace Maris\Symfony\TollRoad\Factory;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Maris\Symfony\Geo\Entity\Location;
-use Maris\Symfony\TollRoad\Entity\PriceRuleI;
-use Maris\Symfony\TollRoad\Entity\PriceRuleII;
-use Maris\Symfony\TollRoad\Entity\PriceRuleIII;
-use Maris\Symfony\TollRoad\Entity\PriceRuleVI;
+use Maris\Symfony\Geo\Factory\LocationFactory;
+use Maris\Symfony\TollRoad\Entity\PriceBlock;
 use Maris\Symfony\TollRoad\Entity\TollRoad;
+use Maris\Symfony\TollRoad\Entity\TrackData;
 use ReflectionClass;
 
 class TollRoadFactory
@@ -19,9 +16,12 @@ class TollRoadFactory
 
     protected ?TollRoad $instance = null;
 
-    public function __construct(  )
+    protected LocationFactory $locationFactory;
+
+    public function __construct( LocationFactory $locationFactory )
     {
         $this->reflection = new ReflectionClass(TollRoad::class);
+        $this->locationFactory = $locationFactory;
         //$this->priceRuleFactory = $priceRuleFactory;
     }
 
@@ -35,6 +35,7 @@ class TollRoadFactory
     {
         $instance = $this->instance ;
         $this->instance = null;
+        $instance->getUuid();
         return $instance;
     }
 
@@ -68,45 +69,40 @@ class TollRoadFactory
         $this->reflection->getProperty("location")->setValue( $this->instance, $location );
         return $this;
     }
-    protected function setRoadside( Location $location ):self
+    protected function setBearing( float $bearing ):self
     {
-        $this->reflection->getProperty("roadside")->setValue( $this->instance, $location );
+        $this->reflection->getProperty("bearing")->setValue( $this->instance, $bearing );
         return $this;
     }
 
-    protected function setPrices( Collection $prices ):self
+    protected function setPrices( PriceBlock $prices ):self
     {
-        $this->reflection->getProperty("priceRules")->setValue( $this->instance, $prices );
+        $this->reflection->getProperty("prices")->setValue( $this->instance, $prices );
+        return $this;
+    }
+
+    protected function setTrackData( TrackData $trackData ):self
+    {
+        $this->reflection->getProperty("trackData")->setValue( $this->instance, $trackData );
         return $this;
     }
 
     public function create( array $data ):TollRoad
     {
-        $pricesCollection = new ArrayCollection();
-        foreach ($data["prices"] as $day => $prices ){
-            foreach ($prices as $group => $price){
-                $rule = match ( $group ){
-                    0 => new PriceRuleI(),
-                    1 => new PriceRuleII(),
-                    2 => new PriceRuleIII(),
-                    3 => new PriceRuleVI()
-                };
-                $rule->setWeekDay($day + 1 );
-                $rule->setPrice( $price );
-                $pricesCollection->add($rule);
-            }
-        }
-
 
         return $this->start()
 
                 ->setName( $data["name"] )
-                ->setTrack( $data["track"]["name"] )
-                ->setStartTrackMark( $data["track"]["start"] )
-                ->setEndTrackMark($data["track"]["end"] )
-                ->setLocation( Location::fromString($data["location"]) )
-                ->setRoadside( Location::fromString($data["roadside"]) )
-                ->setPrices( $pricesCollection )
+                ->setTrackData(
+                    (new TrackData())
+                        ->setName($data["track"]["name"])
+                        ->setStart($data["track"]["start"])
+                        ->setEnd($data["track"]["end"])
+                        ->setTerminal($data["track"]["terminal"])
+                )
+                ->setLocation( $this->locationFactory->create($data["location"]) )
+                ->setBearing($data["bearing"])
+                ->setPrices( new PriceBlock( ...$data["prices"] ) )
 
             ->end();
     }
