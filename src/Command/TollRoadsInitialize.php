@@ -41,25 +41,21 @@ class TollRoadsInitialize extends Command
             $data = $this->createData();
             $instances = $this->em->getRepository(TollRoad::class)->findAll() ?? [];
 
-            foreach ($data as $tollRoad){
-                $arr = array_filter( $instances, fn (TollRoad $i) => $tollRoad->isThis($i) );
-                if(isset($arr[0])){
-                    # Обновляем данные
-                    $arr[0]->setBearing($tollRoad->getBearing())
-                        ->setTrackData($tollRoad->getTrackData())
-                        ->setPrices($tollRoad->getPrices())
-                        ->setLocation($tollRoad->getLocation())
-                        ->setName($tollRoad->getName())
-                        ->setParent($tollRoad->getParent());
-                    $this->em->persist( $arr[0] );
-                    $countUpdate++;
-                }else{
-                    $this->em->persist( $tollRoad );
-                    $countNew++;
-                }
-            }
-           // dump($this->repository);
-            //dump($this->em);
+            foreach ( $data as $newTollRoad)
+                foreach ($instances as $tollRoad)
+                    if($newTollRoad->isThis($tollRoad)) {
+                        $tollRoad->setBearing($tollRoad->getBearing())
+                            ->setTrackData($tollRoad->getTrackData())
+                            ->setPrices($tollRoad->getPrices())
+                            ->setLocation($tollRoad->getLocation())
+                            ->setName($tollRoad->getName())
+                            ->setParent($tollRoad->getParent());
+                        $this->em->persist( $tollRoad );
+                        $countUpdate++;
+                    } else {
+                        $this->em->persist( $newTollRoad );
+                        $countNew++;
+                    }
             $this->em->flush();
         }catch (\Exception $exception ){
             $io->error($exception->getMessage());
