@@ -2,11 +2,13 @@
 
 namespace Maris\Symfony\TollRoad\Command;
 
+use Doctrine\ORM\EntityManager;
 use Maris\Symfony\Geo\Factory\LocationFactory;
 use Maris\Symfony\Geo\Service\EllipsoidalCalculator;
 use Maris\Symfony\TollRoad\Entity\TollRoad;
 use Maris\Symfony\TollRoad\Factory\TollRoadFactory;
 use Maris\Symfony\TollRoad\Repository\TollRoadRepository;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -20,9 +22,15 @@ class TollRoadsInitialize extends Command
 
     protected TollRoadRepository $repository;
 
-    public function __construct( TollRoadRepository $repository )
+    protected ManagerRegistry $doctrine;
+
+    protected EntityManager $em;
+
+    public function __construct( TollRoadRepository $repository , ManagerRegistry $doctrine  )
     {
         $this->repository = $repository;
+        $this->doctrine = $doctrine;
+        $this->em = $doctrine->getManager();
         parent::__construct();
     }
 
@@ -52,12 +60,13 @@ class TollRoadsInitialize extends Command
                     $countNew++;
                 }
             }
+            $this->em->flush();
         }catch (\Exception $exception ){
             $io->error($exception->getMessage());
             return  Command::FAILURE;
         }
 
-        $io->success("Добавлено $countNew записей , обновлено $countUpdate $countNew.");
+        $io->success("Добавлено $countNew записей , обновлено $countUpdate.");
         return Command::SUCCESS;
     }
 
