@@ -31,11 +31,11 @@ class AvtodorParser
 
         dump(json_decode( self::DATA ,1));
 
-        return null;
+        //return null;
 
-        /*return $this->client->request("POST","",[
+        return $this->client->request("POST","",[
             "body" => $this->getData()
-        ])->toArray();*/
+        ])->toArray();
     }
 
 
@@ -62,7 +62,7 @@ class AvtodorParser
         $segments = [];
         $endNumber = 0;
         foreach ($steps as $position => $step){
-            $points[] = $step["geometry"]["coordinates"];
+            $points[] = array_merge($points,$step["geometry"]["coordinates"]);
             $segments[] = [
                 "distance" => $step["distance"],
                 "duration" => $step["duration"],
@@ -78,7 +78,8 @@ class AvtodorParser
                 "points" => $points,
                 "segments" => $segments,
                 "start_dt" => "2023-07-24T12:00:00.966Z"
-            ]
+            ],
+            "vehicle_class_code" => "3"
         ]);
     }
 
