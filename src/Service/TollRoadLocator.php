@@ -16,6 +16,7 @@ class TollRoadLocator
      */
     public function __construct( GeoCalculator $calculator )
     {
+
         # Устанавливаем допустимое расстояние от терминала до линии 20 метров.
         $this->calculator = $calculator->build(allowed: 30);
     }

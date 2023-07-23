@@ -12,7 +12,8 @@
   ],
   "require": {
     "php": ">=8.1",
-    "maris/symfony-geo-bundle": "dev-master"
+    "maris/symfony-geo-bundle": "dev-master",
+    "symfony/http-client": "^6.0"
   },
 
   "repositories": [
