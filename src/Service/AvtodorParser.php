@@ -27,9 +27,15 @@ class AvtodorParser
 
     public function test():mixed
     {
-        return $this->client->request("POST","",[
+        dump($this->getData());
+
+        dump(self::DATA);
+
+        return null;
+
+        /*return $this->client->request("POST","",[
             "body" => $this->getData()
-        ])->toArray();
+        ])->toArray();*/
     }
 
 
