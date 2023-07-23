@@ -27,9 +27,9 @@ class AvtodorParser
 
     public function test():mixed
     {
-        dump($this->getData());
+        dump( json_decode( $this->getData(),1 ));
 
-        dump(self::DATA);
+        dump(json_decode( self::DATA ,1));
 
         return null;
 
