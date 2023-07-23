@@ -31,7 +31,7 @@ class AvtodorParser
 
         dump(json_decode( self::DATA ,1));
 
-        //return null;
+       // return null;
 
         return $this->client->request("POST","",[
             "body" => $this->getData()
@@ -62,7 +62,7 @@ class AvtodorParser
         $segments = [];
         $endNumber = 0;
         foreach ($steps as $position => $step){
-            $points[] = array_merge($points,$step["geometry"]["coordinates"]);
+            $points = array_merge($points,$step["geometry"]["coordinates"]);
             $segments[] = [
                 "distance" => $step["distance"],
                 "duration" => $step["duration"],
