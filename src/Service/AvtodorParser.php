@@ -18,6 +18,7 @@ class AvtodorParser
     {
         $this->client = $client->withOptions([
             'base_uri' => self::URI,
+            'verify_peer' => false,
             "headers" => [
                 "Content-Type"=>"application/json"
             ]
