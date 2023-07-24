@@ -6,6 +6,9 @@ use Maris\Symfony\Geo\Entity\Polyline;
 use Maris\Symfony\Geo\Service\GeoCalculator;
 use Maris\Symfony\TollRoad\Entity\TollRoad;
 
+/**
+ * Определяет пересичеие платой дороги и полилинии
+ */
 class TollRoadLocator
 {
 
