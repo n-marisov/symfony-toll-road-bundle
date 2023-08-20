@@ -5,8 +5,8 @@ bearing: 76.130044239973
 description: 'Участок от Кубинка до Московская обл.'
 track:
     name: 'M-1 «Беларусь»'
-    start: 33
-    end: 66
+    start: 66
+    end: 33
     terminal: 46
 prices:
     - 150

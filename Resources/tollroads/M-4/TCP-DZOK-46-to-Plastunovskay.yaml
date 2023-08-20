@@ -5,8 +5,8 @@ bearing: 44.862588686864
 description: 'Участок дороги от ст.Марьянская до ст.Пластуновская .'
 track:
     name: 'M-4 «Дон» ДЗОК'
-    start: 0
-    end: 51
+    start: 51
+    end: 0
     terminal: 1223
 prices:
     - 300
