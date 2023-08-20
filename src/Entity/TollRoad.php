@@ -2,7 +2,9 @@
 
 namespace Maris\Symfony\TollRoad\Entity;
 
-use Maris\Symfony\Geo\Entity\Location;
+
+use Maris\Interfaces\Geo\Model\LocationInterface;
+use Maris\Symfony\Geo\Embeddable\Model\Entity\Location;
 
 /***
  * Сущность терминала платной дороги.
@@ -49,9 +51,9 @@ class TollRoad
 
     /**
      * Точка центра дороги на которой находится терминал.
-     * @var Location
+     * @var LocationInterface
      */
-    protected Location $location;
+    protected LocationInterface $location;
 
     /**
      * Азимут по направлению движения.
@@ -96,11 +98,12 @@ class TollRoad
      */
     public function equals( self $tollRoad ):bool
     {
-        return $this->getUuid() == $tollRoad->getUuid() &&
+        return false;
+        /*return $this->getUuid() == $tollRoad->getUuid() &&
             $this->location->equals( $tollRoad->location ) &&
             $this->bearing === $tollRoad->bearing &&
             $tollRoad->name = $this->name &&
-                $this->prices->equals( $tollRoad->prices );
+                $this->prices->equals( $tollRoad->prices );*/
     }
 
     /**

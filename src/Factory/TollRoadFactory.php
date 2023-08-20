@@ -2,8 +2,8 @@
 
 namespace Maris\Symfony\TollRoad\Factory;
 
-use Maris\Symfony\Geo\Entity\Location;
-use Maris\Symfony\Geo\Factory\LocationFactory;
+use Maris\Interfaces\Geo\Factory\LocationFactoryInterface;
+use Maris\Interfaces\Geo\Model\LocationInterface;
 use Maris\Symfony\TollRoad\Entity\PriceBlock;
 use Maris\Symfony\TollRoad\Entity\TollRoad;
 use Maris\Symfony\TollRoad\Entity\TrackData;
@@ -16,13 +16,12 @@ class TollRoadFactory
 
     protected ?TollRoad $instance = null;
 
-    protected LocationFactory $locationFactory;
+    protected LocationFactoryInterface $locationFactory;
 
-    public function __construct( LocationFactory $locationFactory )
+    public function __construct( LocationFactoryInterface $locationFactory )
     {
         $this->reflection = new ReflectionClass(TollRoad::class);
         $this->locationFactory = $locationFactory;
-        //$this->priceRuleFactory = $priceRuleFactory;
     }
 
     private function start():self
@@ -64,7 +63,7 @@ class TollRoadFactory
         return $this;
     }
 
-    protected function setLocation( Location $location ):self
+    protected function setLocation( LocationInterface $location ):self
     {
         $this->reflection->getProperty("location")->setValue( $this->instance, $location );
         return $this;
@@ -100,7 +99,7 @@ class TollRoadFactory
                         ->setEnd($data["track"]["end"])
                         ->setTerminal($data["track"]["terminal"])
                 )
-                ->setLocation( $this->locationFactory->create($data["location"]) )
+                ->setLocation( $this->locationFactory->fromString( $data["location"] ) )
                 ->setBearing($data["bearing"])
                 ->setPrices( new PriceBlock( ...$data["prices"] ) )
 

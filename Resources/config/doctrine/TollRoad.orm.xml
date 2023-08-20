@@ -19,30 +19,20 @@
         <!--Используется для однозначного определения терминала и создается на основе его не изменяемых данных-->
         <field name="uuid" length="32" unique="true" />
 
-
         <!-- Название терминала -->
         <field name="name" column="title" />
-
-        <!-- Название трассы на которой расположен терминал -->
-        <embedded name="trackData" column-prefix="track_" class="Maris\Symfony\TollRoad\Entity\TrackData" />
-
-
-        <!-- Точка центра дороги на которой находится терминал -->
-        <many-to-one field="location" target-entity="Maris\Symfony\Geo\Entity\Location">
-            <cascade>
-                <cascade-persist />
-                <cascade-remove />
-            </cascade>
-            <join-columns>
-                <join-column name="location_id" />
-            </join-columns>
-        </many-to-one>
 
         <!-- Азимут (начальный от точки location) в направлении движения транспорта -->
         <field name="bearing" type="float" />
 
+        <!-- Координаты терминала -->
+        <embedded name="location" column-prefix="geo_" class="Maris\Symfony\Geo\Embeddable\Model\Entity\Location"/>
+
+        <!-- Название трассы на которой расположен терминал -->
+        <embedded name="trackData" column-prefix="track_" class="Maris\Symfony\TollRoad\Entity\TrackData" />
+
         <!-- Набор ценовых правил для этого терминала -->
-        <embedded name="prices" column-prefix="group" class="Maris\Symfony\TollRoad\Entity\PriceBlock"/>
+        <embedded name="prices" column-prefix="group_" class="Maris\Symfony\TollRoad\Entity\PriceBlock"/>
 
     </entity>
 

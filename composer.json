@@ -12,17 +12,13 @@
   ],
   "require": {
     "php": ">=8.1",
-    "maris/symfony-geo-bundle": "dev-master"
+    "maris/symfony-geo-embeddable-model-bundle": "dev-master"
   },
 
   "repositories": [
     {
       "type": "git",
-      "url": "https://github.com/n-marisov/symfony-geo-bundle.git"
-    },
-    {
-      "type": "git",
-      "url": "https://github.com/n-marisov/symfony-suggestions-bundle.git"
+      "url": "https://github.com/n-marisov/symfony-geo-embeddable-model-bundle.git"
     }
   ],
   "autoload": {

@@ -4,12 +4,9 @@ namespace Maris\Symfony\TollRoad\Command;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
-use Maris\Symfony\Geo\Factory\LocationFactory;
-use Maris\Symfony\Geo\Service\EllipsoidalCalculator;
+use Maris\Interfaces\Geo\Factory\LocationFactoryInterface;
 use Maris\Symfony\TollRoad\Entity\TollRoad;
 use Maris\Symfony\TollRoad\Factory\TollRoadFactory;
-use Maris\Symfony\TollRoad\Repository\TollRoadRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,9 +23,15 @@ class TollRoadsInitialize extends Command
 {
     protected EntityManager $em;
 
-    public function __construct( EntityManagerInterface $em )
+    protected TollRoadFactory $tollRoadFactory;
+
+    protected LocationFactoryInterface $locationFactory;
+
+    public function __construct( EntityManagerInterface $em , TollRoadFactory $tollRoadFactory, LocationFactoryInterface $locationFactory )
     {
         $this->em = $em;
+        $this->tollRoadFactory = $tollRoadFactory;
+        $this->locationFactory = $locationFactory;
         parent::__construct();
     }
 
@@ -83,11 +86,8 @@ class TollRoadsInitialize extends Command
     /**
      * @return array<TollRoad>
      */
-    public static function createData():array
+    public function createData():array
     {
-        $factory = new TollRoadFactory( new LocationFactory() );
-        $calculator = new EllipsoidalCalculator();
-        $locationFactory = new LocationFactory();
         $data = [];
         $startDir = __DIR__."/../../Resources/tollroads";
         foreach (scandir($startDir) as $dir)
@@ -95,13 +95,13 @@ class TollRoadsInitialize extends Command
                 foreach ( scandir("$startDir/$dir") as $file)
                     if(!in_array($file,[".",".."]))
                         foreach (Yaml::parseFile( "$startDir/$dir/$file" ) as $item){
-                            if(isset($item["location2"])){
+                            /*if(isset($item["location2"])){
                                 $item["bearing"] = $calculator->getInitialBearing(
-                                    $locationFactory->create( $item["location2"] ),
-                                    $locationFactory->create( $item["location2"] )
+                                    $this->locationFactory->fromString( $item["location2"] ),
+                                    $this->locationFactory->fromString( $item["location2"] )
                                 );
-                            }
-                            $data[] = $factory->create($item);
+                            }*/
+                            $data[] = $this->tollRoadFactory->create($item);
                         }
         return $data;
     }

@@ -4,7 +4,7 @@ namespace Maris\Symfony\TollRoad\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Maris\Symfony\Geo\Entity\Bounds;
+use Maris\Symfony\Geo\Embeddable\Model\Entity\Bounds;
 use Maris\Symfony\TollRoad\Entity\TollRoad;
 /**
  * @extends ServiceEntityRepository<TollRoad>
