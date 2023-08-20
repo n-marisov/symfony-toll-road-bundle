@@ -94,16 +94,18 @@ class TollRoadsInitialize extends Command
             if(!in_array($dir,[".",".."]))
                 foreach ( scandir("$startDir/$dir") as $file)
                     if(!in_array($file,[".",".."]))
-                        foreach (Yaml::parseFile( "$startDir/$dir/$file" ) as $item){
+                        $data[] = $this->tollRoadFactory->create( Yaml::parseFile( "$startDir/$dir/$file" ) );
+
+                        /*foreach (Yaml::parseFile( "$startDir/$dir/$file" ) as $item){
                             /*if(isset($item["location2"])){
                                 $item["bearing"] = $calculator->getInitialBearing(
                                     $this->locationFactory->fromString( $item["location2"] ),
                                     $this->locationFactory->fromString( $item["location2"] )
                                 );
                             }*/
-                            dump( $item );
+                           /* dump( $item );
                             $data[] = $this->tollRoadFactory->create($item);
-                        }
+                        }*/
         return $data;
     }
 }
