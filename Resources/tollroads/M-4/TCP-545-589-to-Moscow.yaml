@@ -5,8 +5,8 @@ bearing: 355.51180190063
 description: 'Участок от с.Рогачевка до п.Отрадное.'
 track:
     name: 'M-4 «Дон»'
-    start: 544
-    end: 517
+    start: 589
+    end: 544
     terminal: 545
 prices:
     - 180

@@ -6,7 +6,7 @@ description: 'Участок от с.Рогачевка с.Средний Ико
 track:
     name: 'M-4 «Дон»'
     start: 544
-    end: 544
+    end: 589
     terminal: 589
 prices:
     - 180
