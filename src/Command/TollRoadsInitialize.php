@@ -101,6 +101,7 @@ class TollRoadsInitialize extends Command
                                     $this->locationFactory->fromString( $item["location2"] )
                                 );
                             }*/
+                            dump( $item );
                             $data[] = $this->tollRoadFactory->create($item);
                         }
         return $data;
