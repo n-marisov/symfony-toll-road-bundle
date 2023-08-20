@@ -43,6 +43,7 @@ class TollRoadsInitialize extends Command
         $ids = [];
         try {
             $data = $this->createData();
+            dump($data);
             $repository = $this->em->getRepository(TollRoad::class);
 
             foreach ( $data as $newTollRoad ){
