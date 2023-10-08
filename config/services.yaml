@@ -7,5 +7,5 @@ services:
 
 
    Maris\Symfony\TollRoad\:
-      resource: '../../src/'
-      exclude: '../../src/{DependencyInjection,Entity}'
+      resource: '../src/'
+      exclude: '../src/{DependencyInjection,Entity}'
