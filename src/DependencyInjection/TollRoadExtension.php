@@ -15,7 +15,7 @@ class TollRoadExtension extends Extension
      */
     public function load( array $configs, ContainerBuilder $container )
     {
-        $path = realpath( dirname(__DIR__).'/../Resources/config' );
+        $path = realpath(dirname(__DIR__) . '/../config');
         $loader = new YamlFileLoader( $container, new FileLocator( $path ) );
         $loader->load('services.yaml');
     }
